@@ -47,3 +47,39 @@ def add_usuario():
     return for_him.jsonify(usuario)
   except Exception as ex:
     return jsonify({"message": str(ex)}), 400
+  
+
+@usuario_bp.route("/update/<id>", methods=["PUT"])
+def update_usuario(id):
+  try:
+    data = request.json
+    usuario = UsuarioModel.query.get(id)
+    if usuario == None:
+      return jsonify({"message": "Elemento no encontrado."}), 400
+    if data["nombre"]:
+      usuario.nombre = data["nombre"]
+    if data["usuario"]:
+      usuario.usuario = data["usuario"]
+    if data["clave"]:
+      usuario.clave = data["clave"]
+    if data["tipousuario_id"]:
+      usuario.tipousuario_id = data["tipousuario_id"]
+    if data["estado"]:
+      usuario.estado = data["estado"]
+    db.session.commit()
+    return for_him.jsonify(usuario)
+  except Exception as ex:
+    return jsonify({"message", str(ex)}), 400
+  
+
+@usuario_bp.route("/delete/<id>", methods=["DELETE"])
+def delete_usuario(id):
+  try:
+    usuario = UsuarioModel.query.get(id)
+    if usuario == None:
+      return jsonify({"message": "Elemento no encontrado"}), 400
+    db.session.delete(usuario)
+    db.session.commit()
+    return for_him.jsonify(usuario)
+  except Exception as ex:
+    return jsonify({"message": str(ex)}), 400
