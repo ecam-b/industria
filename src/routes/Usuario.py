@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 # database
 from database.db import db
+# uuid
+import uuid
 # model and schema
 from models.UsuarioModel import UsuarioModel, UsuarioSchema
 
@@ -83,7 +85,8 @@ def add_usuario():
     clave = data["clave"]
     tipousuario_id = data["tipousuario_id"]
     estado = data["estado"]
-    usuario = UsuarioModel(nombre, usuario, clave, tipousuario_id, estado)
+    identificador = uuid.uuid4()
+    usuario = UsuarioModel(identificador, nombre, usuario, clave, tipousuario_id, estado)
     db.session.add(usuario)
     db.session.commit()
     return for_him.jsonify(usuario)

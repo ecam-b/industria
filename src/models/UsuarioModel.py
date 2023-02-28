@@ -8,6 +8,7 @@ class UsuarioModel(db.Model):
 
 
   id = db.Column(db.Integer, primary_key=True)
+  id_privado = db.Column(db.String(36), nullable=False, unique=True)
   nombre = db.Column(db.String(100))
   usuario = db.Column(db.String(100), nullable=False, unique=True)
   clave = db.Column(db.String(300))
@@ -15,7 +16,8 @@ class UsuarioModel(db.Model):
   estado = db.Column(db.Integer)
 
 
-  def __init__(self, nombre, usuario, clave, tipousuario_id, estado):
+  def __init__(self, id_privado, nombre, usuario, clave, tipousuario_id, estado):
+    self.id_privado = id_privado
     self.nombre = nombre
     self.usuario = usuario
     self.clave = clave
