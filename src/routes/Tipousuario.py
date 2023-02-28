@@ -11,6 +11,32 @@ tipousuario_bp = Blueprint("tipousuario", __name__)
 
 @tipousuario_bp.route("/")
 def gell_all_tipousuarios():
+  """
+  Obtener todos los tipos de usuarios
+  Obtener todos los tipos de usuario registrados en la base de datos
+  ---
+  tags:
+  - Tipousuario
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de tipo de usuario
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     tipousuarios = TipousuarioModel.query.all()
     result = for_them.dump(tipousuarios)

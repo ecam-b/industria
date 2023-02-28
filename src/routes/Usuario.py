@@ -13,6 +13,48 @@ usuario_bp = Blueprint("usuario", __name__)
 
 @usuario_bp.route("/")
 def get_all_usuarios():
+  """
+  Obtener todos los usuario
+  Obtener todos los usuario registrados en la base de datos
+  ---
+  tags:
+  - Usuario
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de usuario
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Nombre de usuario del usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario al que corresponde este usuario
+          estado:
+            type: integer
+            description: Estado del usuario
+        example:
+          id: 1
+          nombre: Usuario Generico
+          usuario: UsuaGene
+          clave: clavesecreta
+          tipousuario_id: 2
+          estado: 1
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     usuarios = UsuarioModel.query.all()
     result = for_them.dump(usuarios)
