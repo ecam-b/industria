@@ -16,4 +16,4 @@ def get_all_usuarios():
     result = for_him.dump(usuarios)
     return jsonify(result)
   except Exception as ex:
-    return jsonify({"message": str(ex)})
+    return jsonify({"message": str(ex)}), 400
