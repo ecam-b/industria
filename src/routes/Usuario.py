@@ -13,7 +13,7 @@ usuario_bp = Blueprint("usuario", __name__)
 def get_all_usuarios():
   try:
     usuarios = UsuarioModel.query.all()
-    result = for_him.dump(usuarios)
+    result = for_them.dump(usuarios)
     return jsonify(result)
   except Exception as ex:
     return jsonify({"message": str(ex)}), 400
