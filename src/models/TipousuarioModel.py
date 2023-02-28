@@ -18,4 +18,4 @@ class TipousuarioModel(db.Model):
 
 class TipousuarioSchema(ma.Schema):
   class Meta:
-    fields = ("descripcion",)
+    fields = ("id", "descripcion")

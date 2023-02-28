@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+# database
+from database.db import db
 # model and schema
 from models.UsuarioModel import UsuarioModel, UsuarioSchema
 
@@ -15,5 +17,33 @@ def get_all_usuarios():
     usuarios = UsuarioModel.query.all()
     result = for_them.dump(usuarios)
     return jsonify(result)
+  except Exception as ex:
+    return jsonify({"message": str(ex)}), 400
+  
+
+@usuario_bp.route("/<id>")
+def get_usuario(id):
+  try:
+    usuario = UsuarioModel.query.get(id)
+    if usuario == None:
+      return jsonify({"message": "Elemento no encontrado."}), 400
+    return for_him.jsonify(usuario)
+  except Exception as ex:
+    return jsonify({"message": str(ex)}), 400
+
+
+@usuario_bp.route("/add", methods=["POST"])
+def add_usuario():
+  try:
+    data = request.json
+    nombre = data["nombre"]
+    usuario = data["usuario"]
+    clave = data["clave"]
+    tipousuario_id = data["tipousuario_id"]
+    estado = data["estado"]
+    usuario = UsuarioModel(nombre, usuario, clave, tipousuario_id, estado)
+    db.session.add(usuario)
+    db.session.commit()
+    return for_him.jsonify(usuario)
   except Exception as ex:
     return jsonify({"message": str(ex)}), 400
