@@ -23,6 +23,45 @@ usuario_bp = Blueprint("usuario", __name__)
 
 @usuario_bp.route("/login", methods=["POST"])
 def login():
+  """
+  Login para obtener un token
+  Metodo para obtener el token de acceso al sistema
+  ---
+  tags:
+  - Ingreso
+  parameters:
+    - name: login
+      in: body
+      description: Datos para el login
+      required: true
+      schema: 
+        type: object
+        properties:
+          usuario: 
+            type: string
+            description: Nombre de usuario.
+          clave: 
+            type: string
+            description: Clave de usuario.
+        example:
+          usuario: usuario1
+          clave: Fdlw34!
+  responses:
+    200:
+      description: OK
+      schema: 
+        type: object
+        properties:
+          token:
+            type: string
+            description: Token de acceso al sistema.
+        example:
+          token: pbkdf2:sha256:260000$inK2V9k7ajJzDyTo$a8794ced796c4e26d8481d3062bf2b6f8c395eb7ae230c5627162314e3c6a7ab
+    400:
+      description: Usuario o contraseña incorrectos.
+    500:
+      description: Error en el servidor.
+  """
   try:
     data = request.json
     usuario = UsuarioModel.query.filter_by(usuario = data["usuario"]).first()
