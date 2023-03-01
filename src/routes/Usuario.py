@@ -10,6 +10,8 @@ import jwt
 from datetime import datetime, timedelta
 # config
 from config import SECRET_KEY
+# token_required
+from token_required import token_required
 # model and schema
 from models.UsuarioModel import UsuarioModel, UsuarioSchema
 
@@ -33,11 +35,13 @@ def login():
         algorithm = "HS256"
       )
       return jsonify({"token": token})
+    return jsonify({"message": "Contraseña incorrecta."}), 400
   except Exception as ex:
     return jsonify({"message": str(ex)}), 400
 
 @usuario_bp.route("/")
-def get_all_usuarios():
+@token_required
+def get_all_usuarios(usuario_actual):
   """
   Obtener todos los usuario
   Obtener todos los usuario registrados en la base de datos
@@ -105,7 +109,7 @@ def add_usuario():
     data = request.json
     nombre = data["nombre"]
     usuario = data["usuario"]
-    clave = data["clave"]
+    clave = generate_password_hash(data["clave"])
     tipousuario_id = data["tipousuario_id"]
     estado = data["estado"]
     identificador = uuid.uuid4()
@@ -129,7 +133,7 @@ def update_usuario(id):
     if data["usuario"]:
       usuario.usuario = data["usuario"]
     if data["clave"]:
-      usuario.clave = data["clave"]
+      usuario.clave = generate_password_hash(data["clave"])
     if data["tipousuario_id"]:
       usuario.tipousuario_id = data["tipousuario_id"]
     if data["estado"]:
