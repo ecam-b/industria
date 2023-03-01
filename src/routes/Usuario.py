@@ -1,8 +1,15 @@
 from flask import Blueprint, request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 # database
 from database.db import db
 # uuid
 import uuid
+# jwt
+import jwt
+# datetime
+from datetime import datetime, timedelta
+# config
+from config import SECRET_KEY
 # model and schema
 from models.UsuarioModel import UsuarioModel, UsuarioSchema
 
@@ -12,6 +19,22 @@ for_them = UsuarioSchema(many=True)
 
 usuario_bp = Blueprint("usuario", __name__)
 
+@usuario_bp.route("/login", methods=["POST"])
+def login():
+  try:
+    data = request.json
+    usuario = UsuarioModel.query.filter_by(usuario = data["usuario"]).first()
+    if not usuario:
+      return jsonify({"message": "Usuario no registrado."}), 400
+    if check_password_hash(usuario.clave, data["clave"]):
+      token = jwt.encode(
+        {"id_privado": usuario.id_privado, "exp": datetime.utcnow() + timedelta(minutes=30)},
+        SECRET_KEY,
+        algorithm = "HS256"
+      )
+      return jsonify({"token": token})
+  except Exception as ex:
+    return jsonify({"message": str(ex)}), 400
 
 @usuario_bp.route("/")
 def get_all_usuarios():
