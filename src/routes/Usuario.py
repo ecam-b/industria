@@ -93,7 +93,8 @@ def get_all_usuarios(usuario_actual):
   
 
 @usuario_bp.route("/<id>")
-def get_usuario(id):
+@token_required
+def get_usuario(usuario_actual, id):
   try:
     usuario = UsuarioModel.query.get(id)
     if usuario == None:
@@ -122,7 +123,8 @@ def add_usuario():
   
 
 @usuario_bp.route("/update/<id>", methods=["PUT"])
-def update_usuario(id):
+@token_required
+def update_usuario(usuario_actual, id):
   try:
     data = request.json
     usuario = UsuarioModel.query.get(id)
@@ -145,7 +147,8 @@ def update_usuario(id):
   
 
 @usuario_bp.route("/delete/<id>", methods=["DELETE"])
-def delete_usuario(id):
+@token_required
+def delete_usuario(usuario_actual, id):
   try:
     usuario = UsuarioModel.query.get(id)
     if usuario == None:

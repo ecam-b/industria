@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 # database
 from database.db import db
+# token_required
+from token_required import token_required
 # models and schemas
 from models.TipousuarioModel import TipousuarioModel, TipousuarioSchema
 
@@ -10,7 +12,8 @@ for_them = TipousuarioSchema(many=True)
 tipousuario_bp = Blueprint("tipousuario", __name__)
 
 @tipousuario_bp.route("/")
-def gell_all_tipousuarios():
+@token_required
+def gell_all_tipousuarios(usuario_actual):
   """
   Obtener todos los tipos de usuarios
   Obtener todos los tipos de usuario registrados en la base de datos
@@ -46,7 +49,8 @@ def gell_all_tipousuarios():
 
 
 @tipousuario_bp.route("/<id>")
-def get_tipousuario(id):
+@token_required
+def get_tipousuario(usuario_actual, id):
   try:
     tipousuario = TipousuarioModel.query.get(id)
     if tipousuario == None:
@@ -57,7 +61,8 @@ def get_tipousuario(id):
   
 
 @tipousuario_bp.route("/add", methods=["POST"])
-def add_tipousuario():
+@token_required
+def add_tipousuario(usuario_actual):
   try:
     data = request.json
     descripcion = data["descripcion"]
@@ -70,7 +75,8 @@ def add_tipousuario():
   
 
 @tipousuario_bp.route("/update/<id>", methods=["PUT"])
-def update_tipousuario(id):
+@token_required
+def update_tipousuario(usuario_actual, id):
   try:
     data = request.json
     tipousuario = TipousuarioModel.query.get(id)
@@ -85,7 +91,8 @@ def update_tipousuario(id):
 
 
 @tipousuario_bp.route("/delete/<id>", methods=["DELETE"])
-def delete_tipousuario(id):
+@token_required
+def delete_tipousuario(usuario_actual, id):
   try:
     tipousuario = TipousuarioModel.query.get(id)
     if tipousuario == None:
