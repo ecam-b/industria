@@ -51,6 +51,43 @@ def gell_all_tipousuarios(usuario_actual):
 @tipousuario_bp.route("/<id>")
 @token_required
 def get_tipousuario(usuario_actual, id):
+  """
+  Obtener un tipo de especifico
+  Obtener un tipo de especifico registrados en la base de datos
+  ---
+  tags:
+  - Tipousuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
+    - name: id
+      in: path
+      type: integer
+      required: true
+      description: Id del usuario.
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de tipo de usuario
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     tipousuario = TipousuarioModel.query.get(id)
     if tipousuario == None:
@@ -63,6 +100,46 @@ def get_tipousuario(usuario_actual, id):
 @tipousuario_bp.route("/add", methods=["POST"])
 @token_required
 def add_tipousuario(usuario_actual):
+  """
+  Agregar un tipo de
+  Agregar un tipo de en la base de datos
+  ---
+  tags:
+  - Tipousuario
+  parameters:
+    - name: usuario
+      in: body
+      required: true
+      description: Usuario a agregar.
+      schema:
+        type: object
+        properties:
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de tipo de usuario
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     data = request.json
     descripcion = data["descripcion"]
@@ -77,6 +154,56 @@ def add_tipousuario(usuario_actual):
 @tipousuario_bp.route("/update/<id>", methods=["PUT"])
 @token_required
 def update_tipousuario(usuario_actual, id):
+  """
+  Actualizar un tipo de
+  Actualizar un tipo de en la base de datos
+  ---
+  tags:
+  - Tipousuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
+    - name: id
+      in: path
+      type: integer
+      required: true
+      description: Id del usuario.
+    - name: usuario
+      in: body
+      required: true
+      description: Usuario a actualizar.
+      schema:
+        type: object
+        properties:
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de tipo de usuario
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     data = request.json
     tipousuario = TipousuarioModel.query.get(id)
@@ -93,6 +220,43 @@ def update_tipousuario(usuario_actual, id):
 @tipousuario_bp.route("/delete/<id>", methods=["DELETE"])
 @token_required
 def delete_tipousuario(usuario_actual, id):
+  """
+  Eliminar un tipo de
+  Eliminar un tipo de en la base de datos
+  ---
+  tags:
+  - Tipousuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
+    - name: id
+      in: path
+      type: integer
+      required: true
+      description: Id del usuario.
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de tipo de usuario
+          descripcion:
+            type: string
+            description: Descripción de usuario
+        example:
+          id: 3
+          descripcion: user
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     tipousuario = TipousuarioModel.query.get(id)
     if tipousuario == None:

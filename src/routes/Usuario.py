@@ -44,8 +44,8 @@ def login():
             type: string
             description: Clave de usuario.
         example:
-          usuario: usuario1
-          clave: Fdlw34!
+          usuario: "ecas"
+          clave: "1234"
   responses:
     200:
       description: OK
