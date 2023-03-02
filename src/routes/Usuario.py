@@ -87,6 +87,12 @@ def get_all_usuarios(usuario_actual):
   ---
   tags:
   - Usuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
   responses:
     200:
       description: OK
@@ -134,6 +140,59 @@ def get_all_usuarios(usuario_actual):
 @usuario_bp.route("/<id>")
 @token_required
 def get_usuario(usuario_actual, id):
+  """
+  Obtener un usuario especifico
+  Obtener un usuario especifico registrados en la base de datos
+  ---
+  tags:
+  - Usuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
+    - name: id
+      in: path
+      type: integer
+      required: true
+      description: Id del usuario.
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de usuario
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Nombre de usuario del usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario al que corresponde este usuario
+          estado:
+            type: integer
+            description: Estado del usuario
+        example:
+          id: 1
+          nombre: Usuario Generico
+          usuario: UsuaGene
+          clave: clavesecreta
+          tipousuario_id: 2
+          estado: 1
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     usuario = UsuarioModel.query.get(id)
     if usuario == None:
@@ -145,6 +204,77 @@ def get_usuario(usuario_actual, id):
 
 @usuario_bp.route("/add", methods=["POST"])
 def add_usuario():
+  """
+  Agregar un usuario
+  Agregar un usuario en la base de datos
+  ---
+  tags:
+  - Usuario
+  parameters:
+    - name: usuario
+      in: body
+      required: true
+      description: Usuario a agregar.
+      schema:
+        type: object
+        properties:
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Usuario de usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario
+          estado:
+            type: integer
+            description: Estado de usuario
+        example:
+          nombre: Usuario Mayor
+          usuario: UserMatch
+          clave: "1234"
+          tipousuario_id: 1
+          estado: 1
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de usuario
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Nombre de usuario del usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario al que corresponde este usuario
+          estado:
+            type: integer
+            description: Estado del usuario
+        example:
+          id: 1
+          nombre: Usuario Generico
+          usuario: UsuaGene
+          clave: clavesecreta
+          tipousuario_id: 2
+          estado: 1
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     data = request.json
     nombre = data["nombre"]
@@ -164,6 +294,87 @@ def add_usuario():
 @usuario_bp.route("/update/<id>", methods=["PUT"])
 @token_required
 def update_usuario(usuario_actual, id):
+  """
+  Actualizar un usuario
+  Actualizar un usuario en la base de datos
+  ---
+  tags:
+  - Usuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
+    - name: id
+      in: path
+      type: integer
+      required: true
+      description: Id del usuario.
+    - name: usuario
+      in: body
+      required: true
+      description: Usuario a actualizar.
+      schema:
+        type: object
+        properties:
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Usuario de usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario
+          estado:
+            type: integer
+            description: Estado de usuario
+        example:
+          nombre: Usuario Mayor
+          usuario: UserMatch
+          clave: "1234"
+          tipousuario_id: 1
+          estado: 1
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de usuario
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Nombre de usuario del usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario al que corresponde este usuario
+          estado:
+            type: integer
+            description: Estado del usuario
+        example:
+          id: 1
+          nombre: Usuario Generico
+          usuario: UsuaGene
+          clave: clavesecreta
+          tipousuario_id: 2
+          estado: 1
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     data = request.json
     usuario = UsuarioModel.query.get(id)
@@ -188,6 +399,59 @@ def update_usuario(usuario_actual, id):
 @usuario_bp.route("/delete/<id>", methods=["DELETE"])
 @token_required
 def delete_usuario(usuario_actual, id):
+  """
+  Eliminar un usuario
+  Eliminar un usuario en la base de datos
+  ---
+  tags:
+  - Usuario
+  parameters:
+    - name: x-access-token
+      in: header
+      type: string
+      required: true
+      description: Token de autentificación.
+    - name: id
+      in: path
+      type: integer
+      required: true
+      description: Id del usuario.
+  responses:
+    200:
+      description: OK
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: ID de usuario
+          nombre:
+            type: string
+            description: Nombre de usuario
+          usuario:
+            type: string
+            description: Nombre de usuario del usuario
+          clave:
+            type: string
+            description: Clave de usuario
+          tipousuario_id:
+            type: integer
+            description: Tipo de usuario al que corresponde este usuario
+          estado:
+            type: integer
+            description: Estado del usuario
+        example:
+          id: 1
+          nombre: Usuario Generico
+          usuario: UsuaGene
+          clave: clavesecreta
+          tipousuario_id: 2
+          estado: 1
+    400:
+      description: Recurso no encontrado.
+    500:
+      description: Error en el servidor.
+  """
   try:
     usuario = UsuarioModel.query.get(id)
     if usuario == None:
